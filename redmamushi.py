@@ -29,10 +29,13 @@ def create_account():
 
 	os.system("userdel joe_exotic")
 
-create_account()
+if __name__ == "__main__":
+	#ADD TEST FUNCTIONS HERE
+	create_account()
 
-with open('REPORT.txt', 'w') as f:
-	for item in PASSED:
-		f.write(item+"\n")
-	for item in FAILED:
-		f.write(item+"\n")
+	#PRINTING OUT THE RESULTS
+	with open('REPORT.txt', 'w') as f:
+		for item in PASSED:
+			f.write(item+"\n")
+		for item in FAILED:
+			f.write(item+"\n")

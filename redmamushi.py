@@ -5,8 +5,8 @@ import subprocess
 import os
 ppos = sys.argv[1]
 
-PASSED = ["LIST OF PASSED TESTS"]
-FAILED = ["LIST OF FAILED TESTS"]
+PASSED = ["SYSTEM PROTECTED AGAINST:"]
+FAILED = ["SYSTEM VULNERABLE TO THREAT:"]
 
 os.system("touch REPORT.txt")
 #ddex = "dd of=./STATUS.txt if=./ow.txt"
@@ -21,11 +21,11 @@ def create_account():
 	output = subprocess.Popen([user_check], stdout=subprocess.PIPE, shell=True)
 	result = output.stdout.read().decode("utf-8").split(":")
 	if result[0] == "joe_exotic":
-		print("Atomic Red Test, T1136 - CREATE ACCOUNT: FAILED")
-		FAILED.append("Atomic Red Test, T1136 - CREATE ACCOUNT: FAILED")
+		print("Atomic Red Test, T1136 - CREATE ACCOUNT: VUL")
+		FAILED.append("Atomic Red Test, T1136 - CREATE ACCOUNT: VUL")
 	else:
-		print("Atomic Rest Test, T1136 - CREATE ACCOUNT: PASS")
-		PASSED.append("Atomic Red Test, T1136 - CREATE ACCOUNT: PASS")
+		print("Atomic Rest Test, T1136 - CREATE ACCOUNT: PROTECTED")
+		PASSED.append("Atomic Red Test, T1136 - CREATE ACCOUNT: PROTECTED")
 
 	os.system("userdel joe_exotic")
 
@@ -38,11 +38,11 @@ def create_account_root():
 	output = subprocess.Popen([user_check], stdout=subprocess.PIPE, shell=True)
 	result = output.stdout.read().decode("utf-8").split(":")
 	if result[0] == "carole_baskin":
-		print("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: FAILED")
-		FAILED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: FAILED")
+		print("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: VULN")
+		FAILED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: VULN")
 	else:
-		print("Atomic Rest Test, T1136(uid:0) - CREATE ACCOUNT: PASS")
-		PASSED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: PASS")
+		print("Atomic Rest Test, T1136(uid:0) - CREATE ACCOUNT: PROTECTED")
+		PASSED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: PROTECTED")
 	os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
 if __name__ == "__main__":

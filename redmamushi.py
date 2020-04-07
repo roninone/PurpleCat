@@ -29,9 +29,26 @@ def create_account():
 
 	os.system("userdel joe_exotic")
 
+def create_account_root():
+	user_add = "useradd -o -u 0 -g 0 -M -d /root -s /bin/bash carole_baskin"
+	#user_pass = "echo 'ikilledmyhusband' | passwd --stdin carole_baskin"
+	os.system(user_add)
+	#os.system(user_pass)
+	user_check = "cat /etc/passwd | tail -n1"
+	output = subprocess.Popen([user_check], stdout=subprocess.PIPE, shell=True)
+	result = output.stdout.read().decode("utf-8").split(":")
+	if result[0] == "carole_baskin":
+		print("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: FAILED")
+		FAILED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: FAILED")
+	else:
+		print("Atomic Rest Test, T1136(uid:0) - CREATE ACCOUNT: PASS")
+		PASSED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: PASS")
+	os.system("userdel -f carole_baskin > /dev/null 2>&1")
+
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
 	create_account()
+	create_account_root()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

@@ -89,6 +89,16 @@ def create_hidden_stuff():
 
     os.system('rm -rf /var/tmp/.Bhagavan/')
 
+def issa_trap():
+    #T1154 - Trap: Trap command allows programs and shells to specify commands that will be executed
+    #upon receiving interrupt signals. 
+
+    run_trap = "./trap.sh"
+    os.system(run_trap)
+
+    result = match_log(5, "delete user") 
+    REPORT.append(f"{REPORT_FIELD[0]} T1554 0 TRAP\n{REPORT_FIELD[1]} {result}") 
+
 
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
@@ -96,6 +106,7 @@ if __name__ == "__main__":
 	create_account_root()
 	set_uid_gid()
 	create_hidden_stuff()
+        issa_trap()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

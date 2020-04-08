@@ -92,7 +92,7 @@ def create_hidden_stuff():
 def issa_trap():
     #T1154 - Trap: Trap command allows programs and shells to specify commands that will be executed
     #upon receiving interrupt signals. 
-
+    os.system("chmod +x ./src/trap.sh")
     run_trap = "./src/trap.sh"
     os.system(run_trap)
 

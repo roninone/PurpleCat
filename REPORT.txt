@@ -1,0 +1,18 @@
+ART TEST: T1136
+DETECTION RESULT: Apr  8 16:55:42 kali useradd[2399]: new user: name=joe_exotic, UID=999, GID=100, home=/home/joe_exotic, shell=/bin/bash
+
+ART TEST: T1136
+DETECTION RESULT: Apr  8 16:55:42 kali useradd[2412]: new user: name=carole_baskin, UID=0, GID=0, home=/root, shell=/bin/bash
+
+ART TEST: T1166
+DETECTION RESULT: Apr  8 16:55:42 kali sudo:     root : TTY=pts/0 ; PWD=/root/Desktop/red_mamushi/redmamushi ; USER=root ; COMMAND=/usr/bin/chmod u+s ./src/john_finlay
+
+ART TEST: T1158
+DETECTION RESULT: Hidden directory .Bhagavan was successfully created and detected
+
+ART TEST: T1158
+DETECTION RESULT: Hidden file .Doc_Antle was successfully created and detected
+
+ART TEST: T1554 0 TRAP
+DETECTION RESULT: Apr  8 16:55:43 kali userdel[2451]: delete user 'joshua_dial'
+

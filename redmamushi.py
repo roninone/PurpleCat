@@ -53,6 +53,24 @@ def create_account_root():
 #		PASSED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: PROTECTED")
 	os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
+def set_uid_gid():
+    set_uid = "sudo touch john_finlay"
+    os.system(set_uid)
+
+    change_own = "sudo chown root john_finlay"
+    os.system(change_own)
+
+    change_mod = "sudo chmod u+s john_finlay > /dev/null 2>&1" 
+    os.system(change_mod)
+
+    change_gid = "sudo chmod g+s john_finlay > /dev/null 2>&1"
+    result = match_log(10, "COMMAND=/usr/bin/chmod u+s john_finlay")
+    result_2 = match_log(10, "COMMAND=/usr/bin/chmod g+s john_finlay") 
+
+    REPORT.append(f"{REPORT_FIELD[0]} T1166\n{REPORT_FIELD[1]} {result}")
+    os.system("sudo rm john_finlay > /dev/null 2>&1")
+
+
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
 	create_account()

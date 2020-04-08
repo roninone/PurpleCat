@@ -54,21 +54,21 @@ def create_account_root():
 	os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
 def set_uid_gid():
-    set_uid = "sudo touch john_finlay"
+    set_uid = "sudo touch ./src/john_finlay"
     os.system(set_uid)
 
-    change_own = "sudo chown root john_finlay"
+    change_own = "sudo chown root ./src/john_finlay"
     os.system(change_own)
 
-    change_mod = "sudo chmod u+s john_finlay > /dev/null 2>&1" 
+    change_mod = "sudo chmod u+s ./src/john_finlay > /dev/null 2>&1" 
     os.system(change_mod)
 
-    change_gid = "sudo chmod g+s john_finlay > /dev/null 2>&1"
-    result = match_log(10, "COMMAND=/usr/bin/chmod u+s john_finlay")
-    result_2 = match_log(10, "COMMAND=/usr/bin/chmod g+s john_finlay") 
+    change_gid = "sudo chmod g+s ./src/john_finlay > /dev/null 2>&1"
+    result = match_log(10, "COMMAND=/usr/bin/chmod u+s ./src/john_finlay")
+    result_2 = match_log(10, "COMMAND=/usr/bin/chmod g+s ./src/john_finlay") 
 
     REPORT.append(f"{REPORT_FIELD[0]} T1166\n{REPORT_FIELD[1]} {result}")
-    os.system("sudo rm john_finlay > /dev/null 2>&1")
+    os.system("sudo rm ./src/john_finlay > /dev/null 2>&1")
 
 def create_hidden_stuff():
     # T1158 - Hidden Files and Directories
@@ -93,7 +93,7 @@ def issa_trap():
     #T1154 - Trap: Trap command allows programs and shells to specify commands that will be executed
     #upon receiving interrupt signals. 
 
-    run_trap = "./trap.sh"
+    run_trap = "./src/trap.sh"
     os.system(run_trap)
 
     result = match_log(5, "delete user") 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 	create_account_root()
 	set_uid_gid()
 	create_hidden_stuff()
-        issa_trap()
+	issa_trap()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

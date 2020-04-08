@@ -70,6 +70,25 @@ def set_uid_gid():
     REPORT.append(f"{REPORT_FIELD[0]} T1166\n{REPORT_FIELD[1]} {result}")
     os.system("sudo rm john_finlay > /dev/null 2>&1")
 
+def create_hidden_stuff():
+    # T1158 - Hidden Files and Directories
+    hidden_directory = "mkdir /var/tmp/.Bhagavan"
+    hidden_file = 'echo "It’s not a job, it’s a lifestyle. -Bhagavan Doc Antle" > /var/tmp/.Bhagavan/.Doc_Antle'
+    
+    os.system(hidden_directory)    
+    if os.path.exists('/var/tmp/.Bhagavan'):
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected")
+    else:
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory was not successfully created")
+        
+    os.system(hidden_file)
+    if os.path.exists('/var/tmp/.Bhagavan/.Doc_Antle'):
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected")
+    else:
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created")
+
+    os.system('rm -rf /var/tmp/.Bhagavan/')
+
 
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE

@@ -77,15 +77,15 @@ def create_hidden_stuff():
     
     os.system(hidden_directory)    
     if os.path.exists('/var/tmp/.Bhagavan'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory was not successfully created")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory was not successfully created\n")
         
     os.system(hidden_file)
     if os.path.exists('/var/tmp/.Bhagavan/.Doc_Antle'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created\n")
 
     os.system('rm -rf /var/tmp/.Bhagavan/')
 
@@ -94,6 +94,8 @@ if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
 	create_account()
 	create_account_root()
+	set_uid_gid()
+	create_hidden_stuff()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

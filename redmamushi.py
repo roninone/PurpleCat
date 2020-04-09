@@ -110,11 +110,14 @@ def issa_trap():
     REPORT.append(f"{REPORT_FIELD[0]} T1154: TRAP: Allows for persistence on the system - Trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals.\n{REPORT_FIELD[1]} {result}") 
 
 def t1215_test():
-    os.system("cd ./src && sudo insmod t1215_test.ko")
+    os.system("cd ./src/t1215_km && make > /dev/null 2>&1")
+    os.system("cd ./src/t1215_km && sudo insmod t1215_test.ko")
+    os.system("sudo rmmod t1215_test")
     run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
     exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log")
     REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
-    os.system("sudo rmmod t1215_test")
+    os.system("cd ./src/t1215_km && sudo rm modules.order Module.symvers t1215_test.ko t1215_test.mod.c t1215_test.mod.o t1215_test.o")
+    os.system("cd ./src/t1215_km && sudo rm -rf ./.* > /dev/null 2>&1")
 
 def systemd_service():
     # T1501 - Systemd Service

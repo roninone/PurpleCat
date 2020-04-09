@@ -7,8 +7,8 @@ import time
 ppos = sys.argv[1]
 
 #ACTIONS TAKEN ON SYSTEM
-REPORT_FIELD = ["ART TEST:", "DETECTION RESULT:", "LOG:"]
-REPORT = []
+REPORT_FIELD = ["ART TEST:", "DETECTION RESULT:", "MITRE ATT&CK TECHNIQUE:\"https://attack.mitre.org/techniques/"]
+REPORT = ["MITRE ATT&CK FRAMEWORK TEST - PERSISTENCE"]
 
 os.system("touch REPORT.txt")
 def authlog_readlines(num):
@@ -52,7 +52,7 @@ def create_account():
     user_add = "useradd -M -N -r -s /bin/bash -c evil_account joe_exotic"
     os.system(user_add)
     result = match_log(2, "useradd")
-    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create Account: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create Account: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}{REPORT_FIELD[2]}T1136/\"\n")
     os.system("userdel joe_exotic")
 
 def create_account_root():

@@ -110,6 +110,7 @@ def issa_trap():
     REPORT.append(f"{REPORT_FIELD[0]} T1154: TRAP: Allows for persistence on the system - Trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals.\n{REPORT_FIELD[1]} {result}") 
 
 def t1215_test():
+    os.system("echo 'Y' | apt-get install build-essential linux-headers-`uname -r` > /dev/null 2>&1")
     os.system("cd ./src/t1215_km && make > /dev/null 2>&1")
     os.system("cd ./src/t1215_km && sudo insmod t1215_test.ko")
     os.system("sudo rmmod t1215_test")
@@ -153,7 +154,7 @@ if __name__ == "__main__":
     issa_trap()
     t1215_test()
     systemd_service()
-    local_scheduling()
+    #local_scheduling()
 
     #PRINTING OUT THE RESULTS
     with open('REPORT.txt', 'w') as f:

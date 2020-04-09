@@ -3,6 +3,7 @@
 import sys
 import subprocess
 import os
+import time
 ppos = sys.argv[1]
 
 #ACTIONS TAKEN ON SYSTEM
@@ -121,17 +122,32 @@ def systemd_service():
     success_log = match_anylog(10, "Tiger_King.service", "syslog")
     REPORT.append(f"\n{REPORT_FIELD[0]} T1501:Systemd Service\n{REPORT_FIELD[1]} {success_log}")
 
-if __name__ == "__main__":
-	#ADD TEST FUNCTIONS HERE
-	create_account()
-	create_account_root()
-	set_uid_gid()
-	create_hidden_stuff()
-	issa_trap()
-	t1215_test()
-	systemd_service()
 
-	#PRINTING OUT THE RESULTS
-	with open('REPORT.txt', 'w') as f:
-		for item in REPORT:
-			f.write(item+"\n")
+def local_scheduling():
+    replace_crontab = "echo '* * * * * /tmp/evil.sh' > /tmp/persistevil && crontab /tmp/persistevil" 
+    os.system(replace_crontab) 
+    time.sleep(65)
+    
+    result = match_anylog(5, "(root) CMD (/tmp/evil.sh)", "syslog")
+    REPORT.append(f"{REPORT_FIELD[0]} T1168: Local Job Scheduling: Replace crontab with referenced file\n{REPORT_FIELD[1]} {result}") 
+
+    delete_file= "rm /tmp/persistevil" 
+    os.system(delete_file) 
+
+    delete_cron = "crontab -u root -l | grep -v '/tmp/evil.sh' | crontab -u root -" 
+    os.system(delete_cron) 
+
+if __name__ == "__main__":
+    create_account()
+    create_account_root()
+    set_uid_gid()
+    create_hidden_stuff()
+    issa_trap()
+    t1215_test()
+    systemd_service()
+    local_scheduling()
+
+    #PRINTING OUT THE RESULTS
+    with open('REPORT.txt', 'w') as f:
+        for item in REPORT:
+            f.write(item+"\n")

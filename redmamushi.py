@@ -18,8 +18,26 @@ def authlog_readlines(num):
 	tail_lines = list_f[lines:]
 	return tail_lines
 
+def anylog_readlines(num, type):
+	#num = number of lines to read
+	#type = which log file in /var/log/
+	f = open(f"/var/log/{type}", "r")
+	list_f = f.readlines()
+	lines = len(list_f) - num
+	tail_lines = list_f[lines:]
+	return tail_lines
+
 def match_log(num, case_match):
 	loglines = authlog_readlines(num)
+#	print(loglines)
+	result = "NONE"
+	for line in loglines:
+		if case_match in line:
+			result = line
+	return result
+
+def match_anylog(num, case_match, logfile):
+	loglines = anylog_readlines(num, logfile)
 	print(loglines)
 	result = "NONE"
 	for line in loglines:
@@ -40,17 +58,6 @@ def create_account_root():
 	os.system(user_add)
 	result = match_log(2, "name=carole_baskin, UID=0, GID=0")
 	REPORT.append(f"{REPORT_FIELD[0]} T1136\n{REPORT_FIELD[1]} {result}")
-
-
-#	user_check = "cat /etc/passwd | tail -n1"
-#	output = subprocess.Popen([user_check], stdout=subprocess.PIPE, shell=True)
-#	result = output.stdout.read().decode("utf-8").split(":")
-#	if result[0] == "carole_baskin":
-#		print("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: VULN")
-#		FAILED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: VULN")
-#	else:
-#		print("Atomic Rest Test, T1136(uid:0) - CREATE ACCOUNT: PROTECTED")
-#		PASSED.append("Atomic Red Test, T1136(uid:0) - CREATE ACCOUNT: PROTECTED")
 	os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
 def set_uid_gid():
@@ -95,10 +102,15 @@ def issa_trap():
     os.system("chmod +x ./src/trap.sh")
     run_trap = "./src/trap.sh"
     os.system(run_trap)
-
     result = match_log(5, "delete user") 
     REPORT.append(f"{REPORT_FIELD[0]} T1554 0 TRAP\n{REPORT_FIELD[1]} {result}") 
 
+def t1215_test():
+	os.system("cd ./src && sudo insmod t1215_test.ko")
+	run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
+	exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log")
+	REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
+	os.system("sudo rmmod t1215_test")
 
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
@@ -107,6 +119,7 @@ if __name__ == "__main__":
 	set_uid_gid()
 	create_hidden_stuff()
 	issa_trap()
+	t1215_test()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

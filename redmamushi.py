@@ -112,6 +112,15 @@ def t1215_test():
 	REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
 	os.system("sudo rmmod t1215_test")
 
+def systemd_service():
+    # T1501 - Systemd Service
+    systemd_create = './src/tiger_king.sh > /dev/null 2>&1'
+    systemd_remove = './src/kill_the_king.sh > /dev/null 2>&1'
+    os.system(systemd_create)
+    os.system(systemd_remove)
+    success_log = match_anylog(10, "Tiger_King.service", "syslog")
+    REPORT.append(f"\n{REPORT_FIELD[0]} T1501:Systemd Service\n{REPORT_FIELD[1]} {success_log}")
+
 if __name__ == "__main__":
 	#ADD TEST FUNCTIONS HERE
 	create_account()
@@ -120,6 +129,7 @@ if __name__ == "__main__":
 	create_hidden_stuff()
 	issa_trap()
 	t1215_test()
+	systemd_service()
 
 	#PRINTING OUT THE RESULTS
 	with open('REPORT.txt', 'w') as f:

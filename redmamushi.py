@@ -38,7 +38,7 @@ def match_log(num, case_match):
 
 def match_anylog(num, case_match, logfile):
 	loglines = anylog_readlines(num, logfile)
-	print(loglines)
+#	print(loglines)
 	result = "NONE"
 	for line in loglines:
 		if case_match in line:

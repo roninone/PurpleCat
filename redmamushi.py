@@ -118,11 +118,13 @@ def t1215_test():
 
 def systemd_service():
     # T1501 - Systemd Service
+    os.system("chmod +x ./src/tiger_king.sh")
+    os.system("chmod +x ./src/kill_the_king.sh")
     systemd_create = './src/tiger_king.sh > /dev/null 2>&1'
     systemd_remove = './src/kill_the_king.sh > /dev/null 2>&1'
     os.system(systemd_create)
     os.system(systemd_remove)
-    success_log = match_anylog(10, "Tiger_King.service", "syslog")
+    success_log = match_anylog(10, "Tiger King", "syslog")
     REPORT.append(f"\n{REPORT_FIELD[0]} T1501: Systemd Service: Allows for persistence on the system - Creating and/or modifying service unit files that cause systemd to execute malicious commands at recurring intervals.\n{REPORT_FIELD[1]} {success_log}")
 
 

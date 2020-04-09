@@ -12,54 +12,57 @@ REPORT = []
 
 os.system("touch REPORT.txt")
 def authlog_readlines(num):
-	#num = number of lines to read
-	f = open("/var/log/auth.log", "r")
-	list_f = f.readlines()
-	lines = len(list_f) - num
-	tail_lines = list_f[lines:]
-	return tail_lines
+    #num = number of lines to read
+    f = open("/var/log/auth.log", "r")
+    list_f = f.readlines()
+    lines = len(list_f) - num
+    tail_lines = list_f[lines:]
+    return tail_lines
 
 def anylog_readlines(num, type):
-	#num = number of lines to read
-	#type = which log file in /var/log/
-	f = open(f"/var/log/{type}", "r")
-	list_f = f.readlines()
-	lines = len(list_f) - num
-	tail_lines = list_f[lines:]
-	return tail_lines
+    #num = number of lines to read
+    #type = which log file in /var/log/
+    f = open(f"/var/log/{type}", "r")
+    list_f = f.readlines()
+    lines = len(list_f) - num
+    tail_lines = list_f[lines:]
+    return tail_lines
 
 def match_log(num, case_match):
-	loglines = authlog_readlines(num)
+    loglines = authlog_readlines(num)
 #	print(loglines)
-	result = "NONE"
-	for line in loglines:
-		if case_match in line:
-			result = line
-	return result
+    result = "NONE"
+    for line in loglines:
+        if case_match in line:
+            result = line
+
+    return result
 
 def match_anylog(num, case_match, logfile):
-	loglines = anylog_readlines(num, logfile)
+    loglines = anylog_readlines(num, logfile)
 #	print(loglines)
-	result = "NONE"
-	for line in loglines:
-		if case_match in line:
-			result = line
-	return result
+    result = "NONE"
+    for line in loglines:
+        if case_match in line:
+            result = line
+
+    return result
 
 def create_account():
-	user_add = "useradd -M -N -r -s /bin/bash -c evil_account joe_exotic"
-	os.system(user_add)
-	result = match_log(2, "useradd")
-	REPORT.append(f"{REPORT_FIELD[0]} T1136\n{REPORT_FIELD[1]} {result}")
-	os.system("userdel joe_exotic")
+    user_add = "useradd -M -N -r -s /bin/bash -c evil_account joe_exotic"
+    os.system(user_add)
+    result = match_log(2, "useradd")
+    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create Account: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}")
+    os.system("userdel joe_exotic")
 
 def create_account_root():
-	user_add = "useradd -o -u 0 -g 0 -M -d /root -s /bin/bash carole_baskin"
+    user_add = "useradd -o -u 0 -g 0 -M -d /root -s /bin/bash carole_baskin"
 	#user_pass = "echo 'ikilledmyhusband' | passwd --stdin carole_baskin"
-	os.system(user_add)
-	result = match_log(2, "name=carole_baskin, UID=0, GID=0")
-	REPORT.append(f"{REPORT_FIELD[0]} T1136\n{REPORT_FIELD[1]} {result}")
-	os.system("userdel -f carole_baskin > /dev/null 2>&1")
+
+    os.system(user_add)
+    result = match_log(2, "name=carole_baskin, UID=0, GID=0")
+    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create New User with Root UID and GID: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}")
+    os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
 def set_uid_gid():
     set_uid = "sudo touch ./src/john_finlay"
@@ -75,7 +78,7 @@ def set_uid_gid():
     result = match_log(10, "COMMAND=/usr/bin/chmod u+s ./src/john_finlay")
     result_2 = match_log(10, "COMMAND=/usr/bin/chmod g+s ./src/john_finlay") 
 
-    REPORT.append(f"{REPORT_FIELD[0]} T1166\n{REPORT_FIELD[1]} {result}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1166: SetUID and SetGID: Allows for persistence on the system - Applications can be run with the privileges of the owning user or group respectively.\n{REPORT_FIELD[1]} {result}")
     os.system("sudo rm ./src/john_finlay > /dev/null 2>&1")
 
 def create_hidden_stuff():
@@ -85,15 +88,15 @@ def create_hidden_stuff():
     
     os.system(hidden_directory)    
     if os.path.exists('/var/tmp/.Bhagavan'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden directory was not successfully created\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory was not successfully created\n")
         
     os.system(hidden_file)
     if os.path.exists('/var/tmp/.Bhagavan/.Doc_Antle'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created\n")
 
     os.system('rm -rf /var/tmp/.Bhagavan/')
 
@@ -104,14 +107,14 @@ def issa_trap():
     run_trap = "./src/trap.sh"
     os.system(run_trap)
     result = match_log(5, "delete user") 
-    REPORT.append(f"{REPORT_FIELD[0]} T1554 0 TRAP\n{REPORT_FIELD[1]} {result}") 
+    REPORT.append(f"{REPORT_FIELD[0]} T1154: TRAP: Allows for persistence on the system - Trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals.\n{REPORT_FIELD[1]} {result}") 
 
 def t1215_test():
-	os.system("cd ./src && sudo insmod t1215_test.ko")
-	run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
-	exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log")
-	REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
-	os.system("sudo rmmod t1215_test")
+    os.system("cd ./src && sudo insmod t1215_test.ko")
+    run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
+    exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log")
+    REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
+    os.system("sudo rmmod t1215_test")
 
 def systemd_service():
     # T1501 - Systemd Service
@@ -120,7 +123,7 @@ def systemd_service():
     os.system(systemd_create)
     os.system(systemd_remove)
     success_log = match_anylog(10, "Tiger_King.service", "syslog")
-    REPORT.append(f"\n{REPORT_FIELD[0]} T1501:Systemd Service\n{REPORT_FIELD[1]} {success_log}")
+    REPORT.append(f"\n{REPORT_FIELD[0]} T1501: Systemd Service: Allows for persistence on the system - Creating and/or modifying service unit files that cause systemd to execute malicious commands at recurring intervals.\n{REPORT_FIELD[1]} {success_log}")
 
 
 def local_scheduling():
@@ -129,7 +132,7 @@ def local_scheduling():
     time.sleep(65)
     
     result = match_anylog(5, "(root) CMD (/tmp/evil.sh)", "syslog")
-    REPORT.append(f"{REPORT_FIELD[0]} T1168: Local Job Scheduling: Replace crontab with referenced file\n{REPORT_FIELD[1]} {result}") 
+    REPORT.append(f"{REPORT_FIELD[0]} T1168: Local Job Scheduling: Allows for persistence on the system - Replace crontab with referenced file.\n{REPORT_FIELD[1]} {result}") 
 
     delete_file= "rm /tmp/persistevil" 
     os.system(delete_file) 

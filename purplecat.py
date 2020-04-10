@@ -109,7 +109,7 @@ def t1215_test():
     os.system("sudo rmmod t1215_test")
     run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
     exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log").rstrip()
-    REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}{exit_log}{REPORT_FIELD[2]}T1215/\"\n")
+    REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}{exit_log}\n{REPORT_FIELD[2]}T1215/\"\n")
 
     os.system("cd ./src/t1215_km && sudo rm modules.order Module.symvers t1215_test.ko t1215_test.mod.c t1215_test.mod.o t1215_test.o")
     os.system("cd ./src/t1215_km && sudo rm -rf ./.* > /dev/null 2>&1")
@@ -169,3 +169,4 @@ if __name__ == "__main__":
     with open('REPORT.txt', 'w') as f:
         for item in REPORT:
             f.write(item+"\n")
+    print("Check results in REPORT.txt")

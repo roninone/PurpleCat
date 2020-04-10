@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 #RUN: ./<FILENAME> os=<OS>
+
+'''
+Authors : Dawon Han, Daniel Lee and Kenny Masuda
+Start Date : 2020-04-06
+
+'''
+
 import sys
 import subprocess
 import os

@@ -15,7 +15,7 @@ ppos = sys.argv[1]
 
 #ACTIONS TAKEN ON SYSTEM
 REPORT_FIELD = ["ART TEST:", "DETECTION RESULT:", "MITRE ATT&CK TECHNIQUE:\"https://attack.mitre.org/techniques/"]
-REPORT = ["MITRE ATT&CK FRAMEWORK TEST - PERSISTENCE"]
+REPORT = ["MITRE ATT&CK FRAMEWORK TEST - PERSISTENCE\n"]
 
 os.system("touch REPORT.txt")
 def authlog_readlines(num):
@@ -68,7 +68,7 @@ def create_account_root():
 
     os.system(user_add)
     result = match_log(2, "name=carole_baskin, UID=0, GID=0")
-    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create New User with Root UID and GID: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1136: Create New User with Root UID and GID: Allows for persistence on the system.\n{REPORT_FIELD[1]} {result}{REPORT_FIELD[2]}T1136/\"\n")
     os.system("userdel -f carole_baskin > /dev/null 2>&1")
 
 def set_uid_gid():
@@ -85,7 +85,7 @@ def set_uid_gid():
     result = match_log(10, "COMMAND=/usr/bin/chmod u+s ./src/john_finlay")
     result_2 = match_log(10, "COMMAND=/usr/bin/chmod g+s ./src/john_finlay") 
 
-    REPORT.append(f"{REPORT_FIELD[0]} T1166: SetUID and SetGID: Allows for persistence on the system - Applications can be run with the privileges of the owning user or group respectively.\n{REPORT_FIELD[1]} {result}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1166: SetUID and SetGID: Allows for persistence on the system - Applications can be run with the privileges of the owning user or group respectively.\n{REPORT_FIELD[1]} {result}{REPORT_FIELD[2]}T1166/\"\n")
     os.system("sudo rm ./src/john_finlay > /dev/null 2>&1")
 
 def create_hidden_stuff():
@@ -95,15 +95,15 @@ def create_hidden_stuff():
     
     os.system(hidden_directory)    
     if os.path.exists('/var/tmp/.Bhagavan'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory .Bhagavan was successfully created and detected\n{REPORT_FIELD[2]}T1158/\"\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory was not successfully created\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden directory was not successfully created\n{REPORT_FIELD[2]}T1158/\"\n")
         
     os.system(hidden_file)
     if os.path.exists('/var/tmp/.Bhagavan/.Doc_Antle'):
-        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was successfully created and detected\n{REPORT_FIELD[2]}T1158/\"\n")
     else:
-        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created\n")
+        REPORT.append(f"{REPORT_FIELD[0]} T1158: Hidden Directory: Allows for persistence and evasion.\n{REPORT_FIELD[1]} Hidden file .Doc_Antle was not successfully created\n{REPORT_FIELD[2]}T1158/\"\n")
 
     os.system('rm -rf /var/tmp/.Bhagavan/')
 
@@ -114,7 +114,7 @@ def issa_trap():
     run_trap = "./src/trap.sh"
     os.system(run_trap)
     result = match_log(5, "delete user") 
-    REPORT.append(f"{REPORT_FIELD[0]} T1154: TRAP: Allows for persistence on the system - Trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals.\n{REPORT_FIELD[1]} {result}") 
+    REPORT.append(f"{REPORT_FIELD[0]} T1154: TRAP: Allows for persistence on the system - Trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals.\n{REPORT_FIELD[1]} {result}{REPORT_FIELD[2]}T1154/\"\n") 
 
 def t1215_test():
     os.system("echo 'Y' | apt-get install build-essential linux-headers-`uname -r` > /dev/null 2>&1")
@@ -123,7 +123,7 @@ def t1215_test():
     os.system("sudo rmmod t1215_test")
     run_log = match_anylog(4, "Hello, K3r#3L", "kern.log")
     exit_log = match_anylog(2, "Goodbye, k3RnE1", "kern.log")
-    REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}\n{exit_log}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1215:Kernel Modules and Extension\n{REPORT_FIELD[1]}\n{run_log}{exit_log}{REPORT_FIELD[2]}T1215/\"\n")
     os.system("cd ./src/t1215_km && sudo rm modules.order Module.symvers t1215_test.ko t1215_test.mod.c t1215_test.mod.o t1215_test.o")
     os.system("cd ./src/t1215_km && sudo rm -rf ./.* > /dev/null 2>&1")
 
@@ -136,7 +136,7 @@ def systemd_service():
     os.system(systemd_create)
     os.system(systemd_remove)
     success_log = match_anylog(10, "Tiger King", "syslog")
-    REPORT.append(f"\n{REPORT_FIELD[0]} T1501: Systemd Service: Allows for persistence on the system - Creating and/or modifying service unit files that cause systemd to execute malicious commands at recurring intervals.\n{REPORT_FIELD[1]} {success_log}")
+    REPORT.append(f"{REPORT_FIELD[0]} T1501: Systemd Service: Allows for persistence on the system - Creating and/or modifying service unit files that cause systemd to execute malicious commands at recurring intervals.\n{REPORT_FIELD[1]} {success_log}{REPORT_FIELD[2]}T1501/\"\n")
 
 
 def local_scheduling():
@@ -144,8 +144,8 @@ def local_scheduling():
     os.system(replace_crontab) 
     time.sleep(65)
     
-    result = match_anylog(5, "(root) CMD (/tmp/evil.sh)", "syslog")
-    REPORT.append(f"{REPORT_FIELD[0]} T1168: Local Job Scheduling: Allows for persistence on the system - Replace crontab with referenced file.\n{REPORT_FIELD[1]} {result}") 
+    result = match_anylog(10, "(root) CMD (/tmp/evil.sh)", "syslog")
+    REPORT.append(f"{REPORT_FIELD[0]} T1168: Local Job Scheduling: Allows for persistence on the system - Replace crontab with referenced file.\n{REPORT_FIELD[1]} {result}{REPORT_FIELD[2]}T1168/\"\n") 
 
     delete_file= "rm /tmp/persistevil" 
     os.system(delete_file) 
@@ -161,7 +161,7 @@ if __name__ == "__main__":
     issa_trap()
     t1215_test()
     systemd_service()
-    #local_scheduling()
+    local_scheduling()
 
     #PRINTING OUT THE RESULTS
     with open('REPORT.txt', 'w') as f:

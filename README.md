@@ -1,4 +1,4 @@
-# Purple CAT
+![Interface](/src/PurpleCat.png)
 
 # Prerequisite
 ## T1215 Test:

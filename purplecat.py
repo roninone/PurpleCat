@@ -11,6 +11,8 @@ import sys
 import subprocess
 import os
 import time
+from colorama import Fore
+
 ppos = sys.argv[1]
 
 #ACTIONS TAKEN ON SYSTEM
@@ -141,7 +143,7 @@ def local_scheduling():
     os.system(delete_cron) 
 
 def purplecat_title():
-    print(
+    print(Fore.MAGENTA +
 '''  
 ██████╗ ██╗   ██╗██████╗ ██████╗ ██╗     ███████╗     ██████╗ █████╗ ████████╗
 ██╔══██╗██║   ██║██╔══██╗██╔══██╗██║     ██╔════╝    ██╔════╝██╔══██╗╚══██╔══╝
@@ -149,8 +151,7 @@ def purplecat_title():
 ██╔═══╝ ██║   ██║██╔══██╗██╔═══╝ ██║     ██╔══╝      ██║     ██╔══██║   ██║   
 ██║     ╚██████╔╝██║  ██║██║     ███████╗███████╗    ╚██████╗██║  ██║   ██║   
 ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚══════╝╚══════╝     ╚═════╝╚═╝  ╚═╝   ╚═╝   
-                                                                              
-          
+    
 '''
 )
 

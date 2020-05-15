@@ -4,8 +4,7 @@ Purple Cat is a python tool that was made to automate the enumeration of Red Can
 
 # YouTube Presentation
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=AsBeQ7xuN9M" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" 
-alt="Purple Cat YouTube" width="240" height="180" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=AsBeQ7xuN9M" target="_blank"><img src=/src/PurpleCatYoutube.PNG width="240" height="180" border="10" /></a>
 
 # Prerequisite
 ## T1215 Test:
